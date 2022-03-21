@@ -10,8 +10,8 @@ class Prefix_Array:
         self.seq_len = haplotypes.cols
         self.snapshot_default()
         self.prefix_array, self.div_array = self.BuildPrefixArray()
-        print(self.div_array)
-        self.print_final()
+        #print(self.div_array)
+        #self.print_final()
 
     # Algorithm 1
     def BuildPrefixArray(self) -> (list, list):
@@ -43,6 +43,7 @@ class Prefix_Array:
             DIV = d
             # print PPA of current timestep
             self.snapshot(PPA, DIV, k)
+        self.snapshot(PPA, DIV, self.seq_len-1)
         return PPA, DIV
 
     # Build HTML for display
@@ -58,19 +59,30 @@ class Prefix_Array:
     # Build HTML for display
     def snapshot(self, PPA: list, DIV: list, step: int):
         html = '<pre style="line-height: 100%">'
-        for idx, match_start in zip(PPA, DIV):
-            haplotype = self.haplotypes[idx]
-            html += str(idx) + '|'
-            for k, allele in enumerate(haplotype[:step+1]):
-                if match_start == k:
-                    html += '<strong><u>'
-                html += str(allele)
-            if match_start < len(haplotype) - 1:
+        if step == self.seq_len - 1:
+            for idx, match_start in zip(PPA, DIV):
+                haplotype = self.haplotypes[idx]
+                html += str(idx) + '|'
+                for k, allele in enumerate(haplotype[:-1]):
+                    if match_start == k:
+                        html += '<strong><u>'
+                    html += str(allele)
                 html += '</u></strong>'
-            html += '  ' + str(haplotype[step+1]) + '  ' 
-            for k, allele in enumerate(haplotype[step+2:]):
-                html += str(allele)
-            html += '<br/>'
+                html += '<br/>'
+        else:
+            for idx, match_start in zip(PPA, DIV):
+                haplotype = self.haplotypes[idx]
+                html += str(idx) + '|'
+                for k, allele in enumerate(haplotype[:step+1]):
+                    if match_start == k:
+                        html += '<strong><u>'
+                    html += str(allele)
+                if match_start < len(haplotype) - 1:
+                    html += '</u></strong>'
+                html += '  ' + str(haplotype[step+1]) + '  ' 
+                for k, allele in enumerate(haplotype[step+2:]):
+                    html += str(allele)
+                html += '<br/>'
 
         html += '</pre>'
         with open('/tmp/sample.html', 'a') as sample:
