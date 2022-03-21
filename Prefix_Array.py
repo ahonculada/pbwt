@@ -1,6 +1,7 @@
 from Haplotype import Haplotype
 import sys
 from typing import List
+import webbrowser
 
 class Prefix_Array:
     def __init__(self, haplotypes: Haplotype):
@@ -24,12 +25,21 @@ class Prefix_Array:
                     b.append(idx)
             a.extend(b)
             PPA = a
+            # print PPA of current timestep
+            self.snapshot(PPA)
         return PPA
 
-    def display_prefix_array(self):
-        for idx in self.prefix_array:
+    # Build HTML for display
+    def snapshot(self, PPA: list):
+        html = '<pre style="line-height: 100%">'
+        for idx in PPA:
             haplotype = self.haplotypes[idx]
-            pass
+            html += str(idx) + '|' + ''.join(str(allele) for allele in haplotype[:-1]) + '</br>'
+        html += '</pre>'
+        with open('/tmp/sample.html', 'a') as sample:
+            sample.write(html)
+
+
 
 
 if __name__ == '__main__':
@@ -47,5 +57,6 @@ if __name__ == '__main__':
     H.write_out()
     # Create Prefix Array
     P = Prefix_Array(H)
-    print(P.prefix_array)
+    filename = 'file:///tmp/sample.html'
+    webbrowser.open_new_tab(filename)
 
