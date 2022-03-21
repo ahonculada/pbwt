@@ -8,6 +8,7 @@ class Prefix_Array:
         self.haplotypes = haplotypes.matrix
         self.num_seq = haplotypes.rows
         self.seq_len = haplotypes.cols
+        self.snapshot_default()
         self.prefix_array = self.BuildPrefixArray()
 
     # Algorithm 1
@@ -30,6 +31,16 @@ class Prefix_Array:
         return PPA
 
     # Build HTML for display
+    def snapshot_default(self):
+        html = '<pre style="line-height: 100%">'
+        for idx in range(self.num_seq):
+            haplotype = self.haplotypes[idx]
+            html += str(idx) + '|' + ''.join(str(allele) for allele in haplotype[:-1]) + '</br>'
+        html += '</pre>'
+        with open('/tmp/sample.html', 'a') as sample:
+            sample.write(html)
+
+    # Build HTML for display
     def snapshot(self, PPA: list):
         html = '<pre style="line-height: 100%">'
         for idx in PPA:
@@ -38,8 +49,6 @@ class Prefix_Array:
         html += '</pre>'
         with open('/tmp/sample.html', 'a') as sample:
             sample.write(html)
-
-
 
 
 if __name__ == '__main__':
