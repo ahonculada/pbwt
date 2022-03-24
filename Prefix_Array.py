@@ -89,14 +89,13 @@ class Prefix_Array:
 
     # Algorithm 3
     def report_long_matches(self, min_length: int) -> (int, list, list):
-        M = self.num_seq
-        N = self.seq_len
+        M, N = self.num_seq, self.seq_len
         PPA = list(range(M))
         DIV = [0 for _ in range(M)]
         for k in range(N):
-            a, b, d, e = list(), list(), list(), list()
+            a, b, d, e = [], [], [], [] 
             p, q = k + 1, k + 1
-            ma, mb = list(), list()
+            ma, mb = [], [] 
             for idx, match_start in zip(PPA, DIV):
                 if match_start > k - min_length:
                     if ma and mb:
