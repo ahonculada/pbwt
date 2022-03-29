@@ -59,6 +59,7 @@ class Prefix_Array:
     def snapshot(self, PPA: list, DIV: list, step: int):
         html = '<pre style="line-height: 100%">'
         if step == self.seq_len - 1:
+            html += '<br/' + ''.join([str(i) for i in DIV]) + '<br/>'
             for idx, match_start in zip(PPA, DIV):
                 haplotype = self.haplotypes[idx]
                 html += str(idx) + '|'
@@ -69,6 +70,7 @@ class Prefix_Array:
                 html += '</u></strong>'
                 html += '<br/>'
         else:
+            html += '<br/>' + ''.join([str(i) for i in DIV]) + '<br/>'
             for idx, match_start in zip(PPA, DIV):
                 haplotype = self.haplotypes[idx]
                 html += str(idx) + '|'
@@ -155,7 +157,7 @@ if __name__ == '__main__':
 
     # create input haplotypes
     H = Haplotype(num_seq, seq_len)
-    H.write_out()
+    #H.write_out()
     # Create Prefix Array
     P = Prefix_Array(H)
     filename = 'file:///tmp/sample.html'

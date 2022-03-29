@@ -6,8 +6,10 @@ class Haplotype:
     def __init__(self, rows: int, cols: int) -> List[List[str]]:
         self.rows = rows
         self.cols = cols
-        self.matrix = [self.generate_haplotype() for _ in range(self.rows)]
-        
+        #self.matrix = [self.generate_haplotype() for _ in range(self.rows)]
+        self.matrix = self.read_data()
+
+
     def generate_haplotype(self) -> list:
         return [randint(0,1) for _ in range(self.cols)]
 
@@ -17,7 +19,19 @@ class Haplotype:
                 for col in range(self.cols):
                     data.write(str(self.matrix[row][col]))
                 data.write('\n')
-                
+
+    def read_data(self) -> list:
+        retval = []
+        with open('data.txt', 'r') as data:
+            for line in data.readlines():
+                print(line)
+                row = []
+                for c in line[:-1]:
+                    row.append(int(c))
+                retval.append(row)
+        print(retval)
+        return retval
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
